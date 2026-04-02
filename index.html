@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To do Application</title>
+    <link rel="icon" href="images/Logo Circle.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="todo">
-        <p>To-do</p>
-        <div id="filter-list">
-            <input type="checkbox" id="completed-box">Completed
-            <input type="checkbox" id="active-box">Active
-        </div>
-        <div id="todo-list"></div>
-        <div id="todo-insert">
-            <input id="todo-text"></input>
-            <button id="todo-submit">Enter</button>
+        <p id="header-title">To-do List</p>
+        <div id="contents">
+            <div id="todo-filter">
+                <input class="checkbox" type="checkbox" id="completed-box" checked="true">Completed
+                <input class="checkbox" type="checkbox" id="active-box" checked="true">Active
+            </div>
+            <div id="todo-list"></div>
+            <div id="todo-insert">
+                <input id="todo-text"></input>
+                <button class="button" id="todo-submit">▶</button>
+            </div>
         </div>
     </div>
 

@@ -10,9 +10,9 @@ let todos = [];
 function createTodo(id, text, status) {
     return `
         <div class="counter-element" data-id="id-${id}">
-            <input class="${status ? "strike" : ""}" value="${text}" ${status ? "disabled" : ""}>
-            <button class="done-button">${status ? "Undone" : "Done"}</button>
-            <button class="delete-button">Delete</button>
+            <button class="done-button button">${status ? "❌" : "✔️"}</button>
+            <input class="text-area ${status ? "strike" : ""}" value="${text}" ${status ? "disabled" : ""}>
+            <button class="delete-button button">🗑️</button>
         </div>
     `;
 }
@@ -46,6 +46,7 @@ function setupEventListener(newTodo, todoId) {
 
 function insertTodo() {
     const textValue = userTextField.value;
+    userTextField.value = "";
 
     const newTodo = {
         id: Date.now(),
@@ -83,6 +84,14 @@ function renderTodos(complete = completedBox.checked, active = activeBox.checked
 submitButton.addEventListener("click", () => insertTodo());
 completedBox.addEventListener("change", () => renderTodos(completedBox.checked ? true : false, activeBox.checked));
 activeBox.addEventListener("change", () => renderTodos(completedBox.checked, activeBox.checked ? true : false));
+
+document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    if (key === "Enter") {
+        event.preventDefault();
+        insertTodo();
+    }
+})
 
 window.onload = function () {
     const saved = localStorage.getItem("todos");    // Loads from localStorage
