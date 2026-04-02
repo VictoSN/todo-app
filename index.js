@@ -1,6 +1,8 @@
 const todoList = document.getElementById("todo-list");
 const userTextField = document.getElementById("todo-text");
 const submitButton = document.getElementById("todo-submit");
+const completedBox = document.getElementById("completed-box");
+const activeBox = document.getElementById("active-box");
 
 let todos = [];
 
@@ -25,7 +27,7 @@ function deleteTodo(todoId) {
 function doneTodo(todoId) {
     todos = todos.map(todo => {
         if (todo.id === todoId) {
-            return { ...todo, done: !todo.done };   // If todoId matches, spreads the object and flipped the 'done' value
+            return { ...todo, status: !todo.status };   // If todoId matches, spreads the object and flipped the 'done' value
         }
         return todo;
     });
@@ -48,7 +50,7 @@ function insertTodo() {
     const newTodo = {
         id: Date.now(),
         text: textValue,
-        done: false
+        status: false
     };
 
     todos.push(newTodo);
@@ -61,18 +63,26 @@ function saveTodo() {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-function renderTodos() {
+function renderTodos(complete = completedBox.checked, active = activeBox.checked) {
     todoList.innerHTML = "";
 
     // Rebuild the entire DOM from the "todos" array
     todos.forEach(todo => {
-        todoList.insertAdjacentHTML("beforeend", createTodo(todo.id, todo.text, todo.done));
-        const newTodo = todoList.lastElementChild;
-        setupEventListener(newTodo, todo.id);
+        if (complete === todo.status && complete === true) {
+            todoList.insertAdjacentHTML("beforeend", createTodo(todo.id, todo.text, todo.status));
+            const newTodo = todoList.lastElementChild;
+            setupEventListener(newTodo, todo.id);
+        } else if (active === !todo.status && active === true) {
+            todoList.insertAdjacentHTML("beforeend", createTodo(todo.id, todo.text, todo.status));
+            const newTodo = todoList.lastElementChild;
+            setupEventListener(newTodo, todo.id);
+        }
     });
 }
 
 submitButton.addEventListener("click", () => insertTodo());
+completedBox.addEventListener("change", () => renderTodos(completedBox.checked ? true : false, activeBox.checked));
+activeBox.addEventListener("change", () => renderTodos(completedBox.checked, activeBox.checked ? true : false));
 
 window.onload = function () {
     const saved = localStorage.getItem("todos");    // Loads from localStorage
