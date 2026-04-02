@@ -13,3 +13,7 @@ body {
     border-radius: 10px;
     min-width: 300px;
 }
+
+.strike {
+    text-decoration: line-through;
+}
