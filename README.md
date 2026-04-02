@@ -15,7 +15,7 @@ A browser todo list app that is built to progress my frontend development. This 
 
 ## Screenshots
 ### Main Interface
-![Main Interface](images/main.png)
+![Main Interface](images/Main.png)
 
 ### Active Tasks
 ![Active Tasks](images/Active.png)
