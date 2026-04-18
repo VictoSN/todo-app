@@ -4,38 +4,55 @@ const submitButton = document.getElementById("todo-submit");
 const completedBox = document.getElementById("completed-box");
 const activeBox = document.getElementById("active-box");
 
-let todos = [];
+let todos = []
+
+async function loadTodos() {
+    const res = await fetch('http://localhost:3000/todos');
+    const data = await res.json();
+    return data;
+}
+
+async function deleteTodo(todoId) {
+    await fetch(`http://localhost:3000/todos/${todoId}`, { method: 'DELETE' });
+    
+    renderTodos();
+}
+
+async function doneTodo(todoId) {
+    const todo = todos.find(t => t.id === todoId);
+    await fetch(`http://localhost:3000/todos/${todoId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: !todo.status })
+    })
+
+    renderTodos();
+}
+
+async function insertTodo() {
+    const textValue = userTextField.value;
+    userTextField.value = "";
+
+    const res = await fetch('http://localhost:3000/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: textValue })
+    });
+    
+    renderTodos();
+}
 
 // Creates a html containing the to do list
 function createTodo(id, text, status) {
     return `
         <div class="counter-element" data-id="id-${id}">
-            <button class="done-button button">${status ? "❌" : "✔️"}</button>
-            <input class="text-area ${status ? "strike" : ""}" value="${text}" ${status ? "disabled" : ""}>
-            <button class="delete-button button">🗑️</button>
+        <button class="done-button button">${status ? "❌" : "✔️"}</button>
+        <input class="text-area ${status ? "strike" : ""}" value="${text}" ${status ? "disabled" : ""}>
+        <button class="delete-button button">🗑️</button>
         </div>
     `;
 }
-
-function deleteTodo(todoId) {
-    todos = todos.filter(todo => todo.id !== todoId);   // Remove any elements with the same todoId
-
-    saveTodo();
-    renderTodos();
-}
-
-function doneTodo(todoId) {
-    todos = todos.map(todo => {
-        if (todo.id === todoId) {
-            return { ...todo, status: !todo.status };   // If todoId matches, spreads the object and flipped the 'done' value
-        }
-        return todo;
-    });
-
-    saveTodo();
-    renderTodos();
-}
-
+    
 function setupEventListener(newTodo, todoId) {
     const doneButton = newTodo.querySelector(".done-button");
     const deleteButton = newTodo.querySelector(".delete-button");
@@ -44,28 +61,10 @@ function setupEventListener(newTodo, todoId) {
     deleteButton.addEventListener("click", () => deleteTodo(todoId));
 }
 
-function insertTodo() {
-    const textValue = userTextField.value;
-    userTextField.value = "";
-
-    const newTodo = {
-        id: Date.now(),
-        text: textValue,
-        status: false
-    };
-
-    todos.push(newTodo);
-
-    saveTodo();
-    renderTodos();
-}
-
-function saveTodo() {
-    localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-function renderTodos(complete = completedBox.checked, active = activeBox.checked) {
+async function renderTodos(complete = completedBox.checked, active = activeBox.checked) {
     todoList.innerHTML = "";
+    
+    todos = await loadTodos();
 
     // Rebuild the entire DOM from the "todos" array
     todos.forEach(todo => {
@@ -81,6 +80,7 @@ function renderTodos(complete = completedBox.checked, active = activeBox.checked
     });
 }
 
+
 submitButton.addEventListener("click", () => insertTodo());
 completedBox.addEventListener("change", () => renderTodos(completedBox.checked ? true : false, activeBox.checked));
 activeBox.addEventListener("change", () => renderTodos(completedBox.checked, activeBox.checked ? true : false));
@@ -94,10 +94,5 @@ document.addEventListener("keydown", (event) => {
 })
 
 window.onload = function () {
-    const saved = localStorage.getItem("todos");    // Loads from localStorage
-
-    if (saved) {
-        todos = JSON.parse(saved);
-        renderTodos();
-    }
+    renderTodos();
 }
