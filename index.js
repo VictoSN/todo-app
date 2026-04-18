@@ -19,7 +19,7 @@ async function deleteTodo(todoId) {
 }
 
 async function doneTodo(todoId) {
-    const todo = todos.find(t => t.id === todoId);
+    const todo = todos.find(t => t._id === todoId);
     await fetch(`http://localhost:3000/todos/${todoId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -69,13 +69,13 @@ async function renderTodos(complete = completedBox.checked, active = activeBox.c
     // Rebuild the entire DOM from the "todos" array
     todos.forEach(todo => {
         if (complete === todo.status && complete === true) {
-            todoList.insertAdjacentHTML("beforeend", createTodo(todo.id, todo.text, todo.status));
+            todoList.insertAdjacentHTML("beforeend", createTodo(todo._id, todo.text, todo.status));
             const newTodo = todoList.lastElementChild;
-            setupEventListener(newTodo, todo.id);
+            setupEventListener(newTodo, todo._id);
         } else if (active === !todo.status && active === true) {
-            todoList.insertAdjacentHTML("beforeend", createTodo(todo.id, todo.text, todo.status));
+            todoList.insertAdjacentHTML("beforeend", createTodo(todo._id, todo.text, todo.status));
             const newTodo = todoList.lastElementChild;
-            setupEventListener(newTodo, todo.id);
+            setupEventListener(newTodo, todo._id);
         }
     });
 }

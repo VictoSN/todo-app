@@ -1,25 +1,25 @@
 const express = require('express')
 const router = express.Router()
+const Todo = require('../models/Todo')
 
-let todos = []
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    const todos = await Todo.find();
     res.json(todos)
 })
 
-router.post('/', (req, res) => {
-    const todo = { id: Date.now(), text: req.body.text, status: false }
-    todos.push(todo)
+router.post('/', async (req, res) => {
+    const todo = await Todo.create({ text: req.body.text })
     res.json(todo)
 })
 
-router.delete('/:id', (req, res) => {
-    todos = todos.filter(t => t.id !== Number(req.params.id))
+router.delete('/:id', async (req, res) => {
+    await Todo.findByIdAndDelete(req.params.id)
     res.json({ success:true })
 })
 
-router.patch('/:id', (req, res) => {
-    todos = todos.map(t => t.id === Number(req.params.id) ? { ...t, ...req.body } : t)
+router.patch('/:id', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.params.id, req.body)
     res.json({ success: true })
 })
 
