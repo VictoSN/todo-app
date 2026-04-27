@@ -32,7 +32,7 @@ A browser todo list app that is built to progress my frontend development. This 
 2. Run:
 
 ```bash
-npm install
+npm install cors express mongoose dotenv
 ```
 
 3. Create .env with:
