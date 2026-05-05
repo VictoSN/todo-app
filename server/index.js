@@ -14,6 +14,11 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+});
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err))
