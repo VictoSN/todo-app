@@ -11,9 +11,13 @@ let todos = [];
 function createTodo(id, text, status) {
     return `
         <div class="counter-element" data-id="id-${id}">
-            <button class="done-button button">${status ? "❌" : "✔️"}</button>
+            <div class="todo-button-div">
+                <button class="done-button button todo-button">${status ? "❌" : "✔️"}</button>
+            </div>
             <input class="text-area ${status ? "strike" : ""}" value="${text}" ${status ? "disabled" : ""}>
-            <button class="delete-button button">🗑️</button>
+            <div class="todo-button-div">
+                <button class="delete-button button todo-button">🗑️</button>
+            </div>
         </div>
     `;
 }

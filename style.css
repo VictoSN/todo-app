@@ -6,6 +6,9 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transform: scale(1.1);
+    transform-origin: center;
+    overflow: hidden;
 }
 
 #todo {
@@ -38,6 +41,8 @@ body {
 .counter-element {
     padding: 5px 0 5px 0;
     border-bottom: 1px solid;
+    display: flex;
+    flex-direction: row;
 }
 
 #todo-list {
@@ -56,10 +61,14 @@ body {
 }
 
 .text-area {
-    padding-left: 10px;
+    margin-left: 15px;
     min-width: 200px;
     border: none;
     background: transparent;
+}
+
+.delete-button {
+    margin-left: 5px;
 }
 
 .button {
@@ -71,6 +80,17 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     filter: brightness(1.05);
+}
+
+.counter-element .todo-button-div {
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.counter-element:hover .todo-button-div {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 #todo-text {

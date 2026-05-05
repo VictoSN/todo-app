@@ -23,6 +23,11 @@ A browser todo list app that is built to progress my frontend development. This 
 ### Completed Tasks
 ![Completed Tasks](images/Completed.png)
 
+### Mobile View
+<p align="center">
+  <img src="images/Mobile.png" width="280">
+</p>
+
 ### Empty Tasks
 ![Empty Tasks](images/Empty.png)
 
