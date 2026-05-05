@@ -4,6 +4,7 @@ const submitButton = document.getElementById("todo-submit");
 const completedBox = document.getElementById("completed-box");
 const activeBox = document.getElementById("active-box");
 
+userTextField.value = '';
 let todos = [];
 
 // Creates a html containing the to do list
@@ -39,12 +40,26 @@ function doneTodo(todoId) {
 function setupEventListener(newTodo, todoId) {
     const doneButton = newTodo.querySelector(".done-button");
     const deleteButton = newTodo.querySelector(".delete-button");
+    const todoInput = newTodo.querySelector(".text-area");
 
     doneButton.addEventListener("click", () => doneTodo(todoId));
     deleteButton.addEventListener("click", () => deleteTodo(todoId));
+
+    // Save the changes made
+    todoInput.addEventListener("input", (e) => {
+        todos = todos.map(todo => {
+            if (todo.id === todoId) {
+                return { ...todo, text: e.target.value };
+            }
+            return todo;
+        });
+
+        saveTodo();
+    });
 }
 
 function insertTodo() {
+    if (!userTextField.value) return;
     const textValue = userTextField.value;
     userTextField.value = "";
 
@@ -87,7 +102,7 @@ activeBox.addEventListener("change", () => renderTodos(completedBox.checked, act
 
 document.addEventListener("keydown", (event) => {
     const key = event.key;
-    if (key === "Enter") {
+    if (key === "Enter" && userTextField.value && document.activeElement === userTextField) {
         event.preventDefault();
         insertTodo();
     }
