@@ -8,6 +8,7 @@ A browser todo list app that is built to progress my frontend development. This 
 2. Editing tasks
 3. Stored in MongoDB
 4. Used REST API along with Express and Node.js
+5. Light and Dark Mode
 
 ## How it works
 - Tasks are immediately updated into MongoDB
@@ -19,18 +20,21 @@ A browser todo list app that is built to progress my frontend development. This 
 ![Main Interface](images/Main.png)
 
 ### Active Tasks
-![Active Tasks](images/Active.png)
+![Active Tasks](images/Example-Active.png)
 
 ### Completed Tasks
-![Completed Tasks](images/Completed.png)
+![Completed Tasks](images/Example-Completed.png)
+
+### Dark Mode
+![Dark Mode](images/Example-Dark.png)
 
 ### Mobile View
 <p align="center">
-  <img src="images/Mobile.png" width="280">
+  <img src="images/Example-Mobile.png" width="280">
 </p>
 
 ### Empty Tasks
-![Empty Tasks](images/Empty.png)
+![Empty Tasks](images/Example-Empty.png)
 
 ## How to run
 1. Download the project
@@ -53,3 +57,6 @@ node server/index.js
 ```
 
 5. Open index.html
+
+## License
+This project is licensed under the [MIT License](LICENSE)

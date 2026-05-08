@@ -3,7 +3,7 @@ const router = express.Router()
 const Todo = require('../models/Todo')
 
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         const todos = await Todo.find();
         res.json(todos)
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
         const todo = await Todo.create({ text: req.body.text })
         res.json(todo)
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     try {
         await Todo.findByIdAndDelete(req.params.id)
         res.json({ success:true })
@@ -30,7 +30,7 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
     try {
         await Todo.findByIdAndUpdate(req.params.id, req.body)
         res.json({ success: true })
