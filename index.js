@@ -1,3 +1,5 @@
+const darkModeButton = document.getElementById("darkMode-btn")
+const darkModeImg = document.getElementById("darkMode-img")
 const todoList = document.getElementById("todo-list");
 const userTextField = document.getElementById("todo-text");
 const submitButton = document.getElementById("todo-submit");
@@ -6,6 +8,7 @@ const activeBox = document.getElementById("active-box");
 
 userTextField.value = '';
 let todos = [];
+let darkMode = false;
 
 // Creates a html containing the to do list
 function createTodo(id, text, status) {
@@ -100,9 +103,19 @@ function renderTodos(complete = completedBox.checked, active = activeBox.checked
     });
 }
 
+function changeMode() {
+    document.body.className = darkMode ? "dark" : "";
+    darkMode ? (darkModeImg.src = "/images/moon.svg") : (darkModeImg.src = "/images/sun.svg");
+    localStorage.setItem("darkMode", String(darkMode));
+}
+
 submitButton.addEventListener("click", () => insertTodo());
 completedBox.addEventListener("change", () => renderTodos(completedBox.checked ? true : false, activeBox.checked));
 activeBox.addEventListener("change", () => renderTodos(completedBox.checked, activeBox.checked ? true : false));
+darkModeButton.addEventListener("click", () => {
+    darkMode = !darkMode;
+    changeMode();
+});
 
 document.addEventListener("keydown", (event) => {
     const key = event.key;
@@ -114,6 +127,10 @@ document.addEventListener("keydown", (event) => {
 
 window.onload = function () {
     const saved = localStorage.getItem("todos");    // Loads from localStorage
+    darkMode = localStorage.getItem("darkMode") === "true" ? true : false
+    if (darkMode) {
+        changeMode();
+    }
 
     if (saved) {
         todos = JSON.parse(saved);
